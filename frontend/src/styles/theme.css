@@ -1,0 +1,30 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, "Noto Sans", Ubuntu, system-ui, sans-serif;
+  --bg-deep: rgba(15, 18, 21, 0.94);
+  --bg-primary: rgba(24, 28, 31, 0.78);
+  --bg-secondary: rgba(37, 42, 46, 0.82);
+  --bg-hover: rgba(52, 58, 62, 0.92);
+  --bg-selected: rgba(68, 57, 45, 0.94);
+  --text-primary: #f7f6f3;
+  --text-secondary: #c5c5bf;
+  --text-muted: #858984;
+  --accent: #ff8a2b;
+  --accent-light: #ffc08c;
+  --danger: #ff7676;
+  --border-color: rgba(228, 233, 228, 0.13);
+  --radius: 14px;
+  --shadow-md: 0 22px 70px rgba(0, 0, 0, 0.48);
+  --transition-duration: 200ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { min-width: 100%; min-height: 100%; margin: 0; }
+body { background: transparent; color: var(--text-primary); overflow: hidden; }
+button, input, select { font: inherit; }
+button { color: inherit; }
+::selection { background: rgba(255, 138, 43, 0.35); }

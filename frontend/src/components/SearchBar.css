@@ -1,0 +1,13 @@
+.search-bar-container { position: relative; padding: 8px 20px 17px; }
+.search-bar { min-height: 58px; display: flex; align-items: center; gap: 13px; padding: 10px 14px; background: rgba(8, 11, 13, 0.58); border: 1px solid var(--border-color); border-radius: var(--radius); box-shadow: inset 0 1px rgba(255,255,255,.025), 0 8px 30px rgba(0,0,0,.17); transition: border-color var(--transition-duration), box-shadow var(--transition-duration), background var(--transition-duration); }
+.search-bar:focus-within { background: rgba(10, 13, 15, 0.76); border-color: rgba(255,138,43,.68); box-shadow: 0 0 0 3px rgba(255,138,43,.09), 0 10px 35px rgba(0,0,0,.25); }
+.search-icon { width: 27px; color: var(--accent); font-size: 27px; line-height: 1; transform: rotate(-13deg); }
+.search-input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--text-primary); font-size: 20px; letter-spacing: -.015em; caret-color: var(--accent); }
+.search-input::placeholder { color: #6f746f; }
+.search-input::-webkit-search-cancel-button { display: none; }
+.clear-btn { width: 30px; height: 30px; border: 0; border-radius: 8px; background: transparent; color: var(--text-muted); cursor: pointer; font-size: 20px; }
+.clear-btn:hover, .clear-btn:focus-visible { background: var(--bg-hover); color: var(--accent-light); outline: none; }
+.spinner, .large-spinner { display: inline-block; border: 2px solid rgba(255,255,255,.2); border-top-color: var(--accent); border-radius: 50%; animation: spin .65s linear infinite; }
+.spinner { width: 17px; height: 17px; }.large-spinner { width: 25px; height: 25px; }
+.latency-indicator { position: absolute; right: 28px; bottom: 0; color: var(--text-muted); font: 9px ui-monospace, monospace; }
+@keyframes spin { to { transform: rotate(360deg); } }

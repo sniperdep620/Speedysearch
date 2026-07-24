@@ -1,0 +1,72 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install native dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            desktop-file-utils \
+            libayatana-appindicator3-dev \
+            libgtk-3-dev \
+            librsvg2-dev \
+            libssl-dev \
+            libwebkit2gtk-4.1-dev \
+            libxdo-dev
+
+      - name: Set up locked dependencies
+        run: ./setup.sh --skip-system-deps --with-e2e --no-check
+
+      - name: Verify tag matches project version
+        run: ./scripts/verify-version.sh "${GITHUB_REF_NAME}"
+
+      - name: Validate
+        run: ./scripts/check.sh --with-e2e
+
+      - name: Build Linux bundles
+        run: npm run tauri build
+
+      - name: Collect release artifacts
+        run: |
+          mkdir -p release-artifacts
+          find src-tauri/target/release/bundle \
+            -type f \( -name '*.deb' -o -name '*.AppImage' \) \
+            -exec cp '{}' release-artifacts/ \;
+          test -n "$(find release-artifacts -type f -print -quit)"
+
+      - name: Upload workflow artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: speedysearch-${{ github.ref_name }}-linux
+          path: release-artifacts/*
+          if-no-files-found: error
+
+      - name: Create GitHub prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" release-artifacts/* \
+            --generate-notes \
+            --prerelease \
+            --title "Speedysearch ${GITHUB_REF_NAME}" \
+            --verify-tag

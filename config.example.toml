@@ -1,0 +1,24 @@
+[indexing]
+watch_paths = ["~/", "~/Desktop", "~/Documents", "~/Downloads"]
+exclude_patterns = [".git", ".cache", "__pycache__", "node_modules", "target"]
+index_update_interval_secs = 3600
+batch_update_interval_ms = 500
+
+[performance]
+max_stage1_candidates = 100
+
+[ranking]
+model_path = "~/.cache/speedysearch/ranker.txt"
+model_enabled = true
+enable_clickstream = true
+
+[training]
+auto_train_on_idle = true
+min_samples_to_train = 50
+training_script = "~/.config/speedysearch/train_ranker.py"
+
+[features]
+use_time_of_day = true
+use_active_app = true
+use_working_directory = true
+use_file_type_popularity = true

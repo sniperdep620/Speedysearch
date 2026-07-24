@@ -1,0 +1,40 @@
+[package]
+name = "speedysearch-tauri"
+version = "0.2.0"
+description = "Tauri frontend for Speedysearch"
+authors = ["Speedysearch contributors"]
+edition = "2021"
+license = "Apache-2.0"
+publish = false
+
+[lib]
+name = "speedysearch_tauri"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[features]
+default = ["desktop"]
+desktop = ["tauri/wry", "dep:tauri-plugin-global-shortcut"]
+# Enabled by `tauri build` so the production frontend is embedded in the
+# binary instead of loading the development server from `devUrl`.
+custom-protocol = ["tauri/custom-protocol"]
+
+[[bin]]
+name = "speedysearch-ui"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+anyhow = "1"
+speedysearch = { path = ".." }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { version = "2", default-features = false, features = ["protocol-asset"] }
+
+[target.'cfg(any(target_os = "linux", target_os = "windows", target_os = "macos"))'.dependencies]
+tauri-plugin-global-shortcut = { version = "2", optional = true }
+tauri-plugin-single-instance = "2"
+
+[dev-dependencies]
+tempfile = "3"

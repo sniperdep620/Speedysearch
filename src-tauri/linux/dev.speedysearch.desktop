@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Speedysearch
+GenericName=Desktop Search
+Comment=Fast local search for apps, files and settings
+Exec=speedysearch-ui
+Icon=dev.speedysearch
+Terminal=false
+Categories=Utility;FileTools;
+Keywords=search;launcher;files;applications;settings;COSMIC;
+StartupNotify=true
+StartupWMClass=dev.speedysearch
+X-GNOME-UsesNotifications=false
