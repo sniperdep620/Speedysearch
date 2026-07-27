@@ -6,6 +6,11 @@ opening a pull request.
 
 ## Architecture
 
+The React interface uses the Rust search crate directly on Linux. On Windows,
+the same Tauri command contract forwards to the existing C# search engine over
+the user-restricted `\\.\pipe\speedysearch` named pipe. Tauri starts and owns
+the `speedysearch-cli.exe --daemon` subprocess.
+
 Speedysearch has a reusable Rust search crate and two desktop entry points:
 
 ```text
@@ -39,6 +44,8 @@ original GUI by default and accepts `--daemon` or `--check-model`.
 
 ### Tauri application
 
+- `src-tauri/src/daemon.rs` - Windows subprocess lifecycle and named-pipe client.
+- `src-tauri/src/windows_commands.rs` - Windows mappings for the shared frontend contract.
 - `frontend/src/` — React components, hooks, backend adapter, and styles.
 - `src-tauri/src/commands.rs` — validated commands exposed to the webview.
 - `src-tauri/src/system_integration.rs` — reversible COSMIC launcher handling.
@@ -51,6 +58,10 @@ can exceed JavaScript's safe integer range. Search, indexing, and click logging
 must remain off the main webview thread.
 
 ## Query flow
+
+On Windows, opening and revealing results cross the pipe by decimal ID. The
+daemon resolves each ID against its current index; the webview never supplies
+a path or command for execution.
 
 1. Normalize the query and determine its likely intent.
 2. Build a bounded candidate set with trigram overlap.
@@ -148,6 +159,10 @@ Ranking or indexing changes should include before/after measurements. Avoid
 allocations, blocking I/O, and lock contention in the query path.
 
 ## Packaging
+
+On Windows, `npm run tauri build` first compiles the C# daemon and packages it
+as a private NSIS resource. On Linux, the existing deb and AppImage targets are
+unchanged. See `docs/windows-tauri.md` for the Windows build and protocol.
 
 `npm run tauri build` produces Linux bundles under
 `src-tauri/target/release/bundle/`. `npm run install:user` builds the embedded

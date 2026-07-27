@@ -10,7 +10,11 @@ All notable changes to Speedysearch are documented here. This project follows
 
 - Apache-2.0 licensing and open-source community documentation.
 - Deterministic one-command development setup.
-- Automated validation and tag-based Linux release workflows.
+- Platform-specific release downloads with stable Windows, Debian, and AppImage
+  asset names plus SHA-256 checksums.
+- Automated Linux and Windows validation and tag-based release workflows.
+- Native Windows search backend integration with the shared Tauri/React
+  launcher.
 
 ## [0.2.0] - Unreleased
 

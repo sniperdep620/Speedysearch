@@ -20,7 +20,7 @@ paths, or personal configuration in issues, fixtures, screenshots, or commits.
 
 ## Set up the project
 
-Install Rust stable and Node.js 20.19+ or 22.12+, then run:
+On Linux, install Rust stable and Node.js 20.19+ or 22.12+, then run:
 
 ```bash
 ./setup.sh
@@ -28,6 +28,16 @@ Install Rust stable and Node.js 20.19+ or 22.12+, then run:
 
 The script uses the committed lockfiles and runs the standard validation suite.
 See [README.md](README.md) for platform details and setup flags.
+
+On Windows, also install the MSVC build tools and WebView2 prerequisites listed
+in [the Windows Tauri guide](docs/windows-tauri.md), then run:
+
+```powershell
+npm install
+powershell -NoProfile -ExecutionPolicy Bypass -File .\windows-native\test.ps1 -Configuration Release
+npm run test:unit
+npm run build
+```
 
 ## Make a change
 
@@ -47,6 +57,15 @@ Run:
 
 ```bash
 npm run check
+```
+
+For Windows-specific changes, also run:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\windows-native\test.ps1 -Configuration Release
+cargo test --manifest-path src-tauri/Cargo.toml --locked --lib --bins --tests
+npm run test:unit
+npm run build
 ```
 
 For interaction changes, also run:

@@ -1,0 +1,30 @@
+{
+  "WatchPaths": [
+    "%USERPROFILE%"
+  ],
+  "ExcludePatterns": [
+    ".git",
+    ".cache",
+    "__pycache__",
+    "node_modules",
+    "target",
+    "bin",
+    "obj",
+    "AppData",
+    "$Recycle.Bin",
+    "System Volume Information"
+  ],
+  "MaxStage1Candidates": 100,
+  "BatchUpdateIntervalMs": 350,
+  "ModelEnabled": true,
+  "ModelPath": "%LOCALAPPDATA%\\Speedysearch\\Data\\ranker.txt",
+  "EnableClickstream": true,
+  "UseTimeOfDay": true,
+  "UseActiveApp": true,
+  "UseWorkingDirectory": true,
+  "UseFileTypePopularity": true,
+  "GlobalHotkey": "Ctrl+Space",
+  "Opacity": 0.97,
+  "AlwaysOnTop": true,
+  "RunAtStartup": false
+}

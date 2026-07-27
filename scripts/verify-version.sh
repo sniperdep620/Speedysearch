@@ -39,7 +39,9 @@ const versions = new Map([
 
 function cargoLockVersion(path, packageName) {
   const contents = readFileSync(path, "utf8");
-  const packages = [...contents.matchAll(/\[\[package\]\]\n([\s\S]*?)(?=\n\[\[package\]\]|$)/g)];
+  const packages = [
+    ...contents.matchAll(/\[\[package\]\]\r?\n([\s\S]*?)(?=\r?\n\[\[package\]\]|$)/g),
+  ];
   const matching = packages.find(([, block]) => {
     const name = block.match(/^name\s*=\s*"([^"]+)"/m)?.[1];
     return name === packageName;

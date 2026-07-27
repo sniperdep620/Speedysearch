@@ -7,6 +7,7 @@
 <!-- List exact commands and results. -->
 
 - [ ] `npm run check`
+- [ ] `.\windows-native\test.ps1 -Configuration Release` (for Windows changes)
 - [ ] `./scripts/check.sh --with-e2e` (for interaction changes)
 - [ ] Benchmarks included (for ranking/indexing changes)
 

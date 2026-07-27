@@ -8,9 +8,10 @@ Speedysearch is an early open-source preview maintained on a best-effort basis.
 - Use the bug-report template for reproducible defects.
 - Use the feature-request template for scoped product ideas.
 
-Include your Speedysearch version, Linux distribution, desktop environment, and
-the exact command/output needed to reproduce a problem. Remove private paths,
-queries, clickstream data, and other personal information first.
+Include your Speedysearch version, operating system version, and the exact
+command/output needed to reproduce a problem. On Linux, also include the
+distribution and desktop environment. Remove private paths, queries,
+clickstream data, and other personal information first.
 
 Security vulnerabilities must be reported privately as described in
 [SECURITY.md](SECURITY.md).

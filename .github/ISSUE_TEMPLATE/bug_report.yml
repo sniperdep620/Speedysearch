@@ -21,8 +21,8 @@ body:
     id: environment
     attributes:
       label: Environment
-      description: Linux distribution, version, display server, and desktop
-      placeholder: Pop!_OS 24.04, Wayland, COSMIC
+      description: Operating system/version and, on Linux, display server and desktop
+      placeholder: Windows 11 25H2, or Pop!_OS 24.04 / Wayland / COSMIC
     validations:
       required: true
   - type: textarea

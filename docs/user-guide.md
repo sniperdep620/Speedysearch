@@ -8,15 +8,16 @@ private. The index and optional personalization data stay on your computer.
 
 Speedysearch:
 
-- scans your home directory and common desktop folders
-- watches those paths for file changes
-- indexes `.desktop` launchers from system and user application folders
-- answers search requests over a local Unix socket
+- scans configured local folders and watches them for file changes
+- discovers `.desktop` launchers on Linux
+- discovers Start Menu apps, Windows settings, and system commands on Windows
+- answers search requests through local-only IPC
 - ranks results using exact matches, typo tolerance, and frecency
 
 ## Search window
 
-From a development checkout, set up and launch the primary Tauri interface:
+From a Linux development checkout, set up and launch the primary Tauri
+interface:
 
 ```bash
 ./setup.sh
@@ -29,15 +30,64 @@ keyboard-focused layout with filters, result cards, previews, and settings.
 Use it like this:
 
 - type to search
-- switch between `All`, `Apps`, `Files`, and `Settings`
-- use `↑` and `↓` to move the selection
+- scan the `Applications`, `Files`, and `Settings` result columns
+- use any arrow key to move the selection
 - press `Enter` or click a result to open it
-- right-click a result to copy its location
-- press `Esc` or use the close button to exit
+- hover or focus a result to open its preview and copy its location
+- press `Esc` to clear the query or hide the launcher
 
 ## Install and run
 
-For a desktop-integrated installation on Linux, run:
+### Windows
+
+Download
+[`Speedysearch-Windows-x64-Setup.exe`](../../../releases/latest/download/Speedysearch-Windows-x64-Setup.exe)
+and run it. The installer is per-user and does not require administrator
+access. It adds Speedysearch to the Start Menu.
+
+If you are working from a source checkout instead, double-click `install.cmd`
+in the repository root or run:
+
+```powershell
+.\install.cmd
+```
+
+The source installer builds and installs Speedysearch, enables automatic
+startup, and launches it. Automatic startup runs the Tauri launcher hidden
+until `Ctrl+Space` is pressed.
+
+Launch a release installation from the Start Menu. From a source checkout,
+start or activate the installed app with:
+
+```powershell
+.\start.cmd
+```
+
+Use `.\install.cmd -NoStartup` if Speedysearch should not run at sign-in. The
+installer can be run again with or without this flag to change that choice.
+Release installations can be removed from **Settings → Apps → Installed
+apps**.
+
+### Linux
+
+Debian and Ubuntu users can download
+[`Speedysearch-Linux-amd64.deb`](../../../releases/latest/download/Speedysearch-Linux-amd64.deb)
+and install it with:
+
+```bash
+sudo apt install ./Speedysearch-Linux-amd64.deb
+```
+
+Other x86_64 distributions can download
+[`Speedysearch-Linux-x86_64.AppImage`](../../../releases/latest/download/Speedysearch-Linux-x86_64.AppImage),
+then run:
+
+```bash
+chmod +x Speedysearch-Linux-x86_64.AppImage
+./Speedysearch-Linux-x86_64.AppImage
+```
+
+For a desktop-integrated installation from a source checkout, run:
 
 ```bash
 npm run install:user
@@ -96,9 +146,10 @@ Without `--daemon`, the original GUI starts and connects to the local service
 automatically. The Tauri interface does not need this socket because it links
 the search crate directly.
 
-## How to search
+## Linux native daemon API
 
-The daemon speaks newline-delimited JSON over a Unix socket:
+The optional Linux native daemon speaks newline-delimited JSON over a Unix
+socket:
 
 - socket path: `~/.cache/speedysearch.sock`
 - request format: `{"query":"your text"}`
@@ -113,7 +164,7 @@ printf '{"query":"document"}\n' | nc -U ~/.cache/speedysearch.sock
 You can also send typo-heavy queries. For example, `dcument` still matches
 `document`.
 
-## What gets indexed
+## What gets indexed on Linux
 
 By default, the daemon looks at:
 
@@ -134,7 +185,7 @@ Settings, are classified as settings too. Names, generic names, comments,
 keywords, executable names, and common aliases are searchable, so queries such
 as `vs code`, `vscode`, and `general settings` work as expected.
 
-## Configuration
+## Linux configuration
 
 The config file lives at:
 
@@ -204,6 +255,9 @@ If the GUI says the search service is offline:
 - check that your watched paths actually exist
 - try launching `./target/release/speedysearch --daemon` directly once
 
+For Windows backend, indexing, or shortcut problems, use the
+[Windows troubleshooting guide](windows-tauri.md#troubleshooting).
+
 If a file does not appear:
 
 - verify that it is not excluded by your config
@@ -231,7 +285,8 @@ key or Tab to move through results, press Enter to open, and press Escape to
 clear the query or hide the window. Hover a result for its preview and actions.
 The preferences button controls layout, preview position, opacity, and score
 display. Preferences are stored locally in
-`~/.config/speedysearch/ui-config.json`.
+`~/.config/speedysearch/ui-config.json` on Linux and
+`%LOCALAPPDATA%\Speedysearch\ui-config.json` on Windows.
 
 To change the universal shortcut, open Preferences, choose **Keyboard
 shortcut**, and select **Change shortcut**. Press a combination using Ctrl,

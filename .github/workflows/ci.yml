@@ -15,6 +15,7 @@ concurrency:
 
 jobs:
   validate:
+    name: Linux
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
@@ -42,5 +43,48 @@ jobs:
       - name: Set up locked dependencies
         run: ./setup.sh --skip-system-deps --no-check
 
+      - name: Audit frontend dependencies
+        run: npm audit --audit-level=high
+
       - name: Validate
         run: npm run check
+
+  windows:
+    name: Windows
+    runs-on: windows-2025
+    timeout-minutes: 45
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Set up Rust tooling
+        run: rustup component add clippy rustfmt
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Check Rust formatting
+        run: cargo fmt --all -- --check
+
+      - name: Test native Windows backend
+        shell: powershell
+        run: |
+          .\windows-native\test.ps1 -Configuration Release
+
+      - name: Lint Windows Tauri shell
+        run: cargo clippy --manifest-path src-tauri/Cargo.toml --locked --all-targets -- -D warnings
+
+      - name: Test Windows Tauri shell
+        run: cargo test --manifest-path src-tauri/Cargo.toml --locked --lib --bins --tests
+
+      - name: Test shared frontend
+        run: npm run test:unit
+
+      - name: Build shared frontend
+        run: npm run build

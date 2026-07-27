@@ -12,6 +12,7 @@
 /playwright-report/
 /test-results/
 /coverage/
+/windows-native/bin/
 
 # Python training environment
 /.venv/
